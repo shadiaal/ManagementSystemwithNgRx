@@ -1,0 +1,30 @@
+<div class="task-list-container">
+    <h2>Task List</h2>
+  
+
+    <div class="task-form">
+      <form [formGroup]="tasksForm" (ngSubmit)="onSubmit()">
+        <input type="text" formControlName="task" placeholder="Enter new task" />
+        <button type="submit" [disabled]="tasksForm.invalid">Add Task</button>
+      </form>
+    </div>
+
+    <div class="task-items">
+      <div *ngFor="let task of tasks$ | async" class="task-item">
+        <span>{{ task.task }}</span>
+  
+        <button class="edit-button" (click)="onEditTask(task)">Edit</button>
+        <button class="delete-button" (click)="onDeleteTask(task.id)">Delete</button>
+      </div>
+    </div>
+  
+    <div *ngIf="taskToEdit" class="edit-task-form">
+      <form [formGroup]="editForm" (ngSubmit)="onEditSubmit()">
+        <input type="text" formControlName="task" />
+        <button type="submit" [disabled]="editForm.invalid">Save Changes</button>
+        <button type="button" (click)="cancelEdit()">Cancel</button>
+      </form>
+    </div>
+  </div>
+  
+  
