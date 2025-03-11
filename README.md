@@ -34,14 +34,9 @@ For the backend services (microservices), follow these steps:
    cd <microservices-folder>
    ```
 
-2. **Install dependencies** 
+2. **Run the microservices locally:**
    ```
-   npm install
-   ```
-
-3. **Run the microservices locally:**
-   ```
-   npm run start
+   dotnet run
    ```
 
    If you're using multiple microservices, ensure each service is running on different ports (e.g., `http://localhost:5009`, `http://localhost:5398`, etc.).
@@ -67,7 +62,7 @@ NgRx is a reactive state management library for Angular, built using the Redux p
    ```
 
 2. **Define the State:**
-   Define the application's state in a central file, usually within a `store` folder. For example, if managing a list of tasks:
+   Define the application's state in a central file, usually within a `store` folder.
    
 
 3. **Create Actions:**
@@ -87,4 +82,4 @@ NgRx is a reactive state management library for Angular, built using the Redux p
 7. **Dispatching Actions:**
    In your component, dispatch actions like loading tasks or adding new tasks:
   
-By following the steps above, you integrate NgRx for state management in your Angular app while keeping the app's state centralized and reactive. This setup ensures the state is consistent and all changes are managed through actions, reducers, and effects.
+By following the steps above, you integrate NgRx for state management in your Angular app while keeping the app's state centralized and reactive. 
