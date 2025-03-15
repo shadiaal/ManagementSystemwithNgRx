@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Actions, createEffect, ofType } from '@ngrx/effects';
 import { TaskService } from '../services/task.service';
-import { loadTasks, addTask, updateTask, deleteTask } from './task.actions';
+import { loadTasks, addTask, updateTask, deleteTask,loadTasksSuccess,loadTasksFailure } from './task.actions';
 import { mergeMap, map, catchError } from 'rxjs/operators';
 import { of } from 'rxjs';
 
@@ -9,14 +9,19 @@ import { of } from 'rxjs';
 export class TaskEffects {
   constructor(private actions$: Actions, private taskService: TaskService) {}
 
-  loadTasks$ = createEffect(() =>this.actions$.pipe(ofType(loadTasks),mergeMap(() =>
+
+  loadTasks$ = createEffect(() =>
+    this.actions$.pipe(
+      ofType(loadTasks),
+      mergeMap(() =>
         this.taskService.getTasks().pipe(
-          map(tasks => ({ type: '[Task] Load Tasks Success', tasks })),
-          catchError(() => of({ type: '[Task] Load Tasks Failure' }))
+          map(tasks => loadTasksSuccess({ tasks })), 
+          catchError(error => of(loadTasksFailure({ error: 'loading failed' }))) 
         )
       )
     )
   );
+
 
   // Add New 
   addTask$ = createEffect(() =>this.actions$.pipe(ofType(addTask),mergeMap(action =>
