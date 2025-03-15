@@ -1,37 +1,37 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, inject, OnInit } from '@angular/core';
 import { Store } from '@ngrx/store';
 import { Observable } from 'rxjs';
-import { selectAllTasks} from '../store/task.selectors';
+import { selectAllTasks,selectTaskError} from '../store/task.selectors';
 import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms'; 
 import { RouterModule } from '@angular/router';
 import { loadTasks, deleteTask, Task, updateTask, addTask } from '../store/task.actions';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { HttpClient } from '@angular/common/http';
+import {TaskService} from '../services/task.service';
 
 @Component({
   selector: 'app-task-list',
   standalone: true,
-  imports: [CommonModule, ReactiveFormsModule, RouterModule],
+  imports: [CommonModule, ReactiveFormsModule, RouterModule,FormsModule],
   templateUrl: './task-list.component.html',
   styleUrls: ['./task-list.component.css']
 })
 
 export class TaskListComponent implements OnInit {
+  http=inject(HttpClient);
+  TasksApi=inject(TaskService);
   tasksForm: FormGroup;
   editForm: FormGroup;
   tasks$: Observable<Task[]>;
   taskToEdit: Task | null = null;
-
+  error$: Observable<string | null>;
   constructor(private fb: FormBuilder, private store: Store) {
-    this.tasksForm = this.fb.group({
-      task: ['', Validators.required],
-    });
-
-    this.editForm = this.fb.group({
-      task: ['', Validators.required],
-    });
-
+    this.tasksForm = this.fb.group({task: ['', Validators.required],});
+    this.editForm = this.fb.group({task: ['', Validators.required], });
+   
     this.tasks$ = this.store.select(selectAllTasks);
+    this.error$ = this.store.select(selectTaskError);
   }
 
   ngOnInit(): void {
